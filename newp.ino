@@ -1,3 +1,6 @@
+#include <SoftwareSerial.h>
+#define BT_SERIAL_RX 0
+#define BT_SERIAL_TX 1
 //the time we give the sensor to calibrate (10-60 secs according to the datasheet)
 int calibrationTime = 30;       
  
@@ -13,12 +16,27 @@ boolean takeLowTime;
  
 int pirPin = 3;    //the digital pin connected to the PIR sensor's output
 int ledPin = 13;
+
+
+
+
+
+SoftwareSerial BluetoothSerial(BT_SERIAL_RX, BT_SERIAL_TX);
+
+/*void loop() {
+
+  BluetoothSerial.write("t");
+  BluetoothSerial.println("t"); 
+  Serial.println("t"); 
+  //delay(100); // prepare next data
+}*/
  
  
 /////////////////////////////
 //SETUP
 void setup(){
-  Serial.begin(4800);
+  Serial.begin(9600);
+  BluetoothSerial.begin(9600);
   pinMode(pirPin, INPUT);
   pinMode(ledPin, OUTPUT);
   digitalWrite(pirPin, LOW);
@@ -30,7 +48,7 @@ void setup(){
       delay(1000);
       }
     Serial.println(" done");
-    Serial.println("SENSOR ACTIVE");
+    Serial.println("SENSOR ACTIVE"); 
     delay(50);
   }
  
@@ -47,6 +65,9 @@ void loop(){
          Serial.print("motion detected at ");
          Serial.print(millis()/1000);
          Serial.println(" sec");
+         BluetoothSerial.write("t");
+  BluetoothSerial.println("t"); 
+  Serial.println("t");
          delay(50);
          }        
          takeLowTime = true;
