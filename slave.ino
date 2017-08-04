@@ -1,26 +1,29 @@
-
 #include<SoftwareSerial.h>
-String message; //string that stores the incoming message
-void setup()
-{
-  Serial.begin(9600); //set baud rate
-  pinMode(0, OUTPUT);
+#define BT_SERIAL_RX 1
+#define BT_SERIAL_TX 0
+SoftwareSerial BTSerial(BT_SERIAL_RX, BT_SERIAL_TX);
+char inputString;
+void setup() {
+  Serial.begin(9600);
+  BTSerial.begin(9600);
+  pinMode(13, OUTPUT);
+
 }
 
-void loop()
-{
-  while(Serial.available())
-  {
-    message+=char(Serial.read());
-  }
-  if(!Serial.available())
-  {
-    if(message != "") // if we received some data, then light up an LED
-    {   
-      digitalWrite(0, HIGH);    
-      Serial.println(message);
-          message="1";
-    }
-  }
-  delay(200);
+void loop() {
+ if (!BTSerial.available()) {
+
+    Serial.println("break");
+    delay(10000);
+   
+ }
+ else if (BTSerial.available()){
+  //Serial.println("a");
+   inputString=char(BTSerial.read());
+    Serial.println(inputString);
+    digitalWrite(13, HIGH);
+ }
 }
+  
+
+
